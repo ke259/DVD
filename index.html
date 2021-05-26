@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js">
+    </script>
+</head>
+
+<body onload="setSize()" onresize="setSize()">
+    <canvas id="myCanvas" style="position: fixed;"></canvas>
+    <canvas id="shan" style="position: fixed;" onclick="full()"></canvas>
+
+
+    <script>
+        var speed;
+
+        function setSpeed() {
+            var s = prompt("请输入速度：", "").trim();
+            if (s == null || s == "" || isNaN(s)) {
+                setSpeed()
+            }
+            if (1 <= s <= 100) {
+                speed = s / 10
+            } else {
+                setSpeed()
+            }
+        }
+
+        setSpeed()
+        console.log(speed)
+
+        function full() {
+            var el = document.documentElement;
+            var rfs = el.requestFullScreen || el.webkitRequestFullScreen || el.msRequestFullScreen;
+
+            if (rfs) {
+                rfs.call(el);
+            }
+        }
+
+        var myCanvas = document.getElementById("myCanvas");
+        var ctx1 = myCanvas.getContext("2d");
+        var shan = document.getElementById("shan");
+        var ctx2 = shan.getContext("2d")
+
+        function setSize() {
+            $("canvas").attr("width", document.documentElement.clientWidth)
+            $("canvas").attr("height", document.documentElement.clientHeight);
+        }
+
+
+        var i = 0
+        var color = function() {
+            i += 180
+            ctx1.fillStyle = `hsl(${i},100%,50%)`
+            ctx1.fillRect(0, 0, 2000, 3000);
+            setTimeout(color, 1)
+            i++
+        }
+        color()
+
+
+        var fx = fy = false;
+        var x = rx = 60,
+            y = ry = 30;
+        var colors = ["red", "blue", "green", "yellow", "pink"];
+        var ci = 0;
+
+        function move() {
+            ctx2.clearRect(0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight)
+            ctx2.beginPath();
+            ctx2.ellipse(x, y, rx, ry, 0, 0, 2 * Math.PI, false);
+            if (isBoom()) {
+                ci++;
+                ci = ci % 5;
+            }
+            ctx2.fillStyle = colors[ci];
+            ctx2.fill();
+
+
+            ctx2.font = "italic bold 30px arial";
+            ctx2.fillStyle = "white";
+            ctx2.textAlign = "center"
+            ctx2.textBaseline = "middle"
+            ctx2.fillText("DVD", x, y);
+
+
+
+            function isBoom() {
+                if (x < rx) fx = false;
+                if (x > document.documentElement.clientWidth - rx) fx = true;
+
+                if (y < ry) fy = false;
+                if (y > document.documentElement.clientHeight - ry) fy = true;
+
+                if (fx == false) x += speed;
+                else x -= speed;
+                if (fy == false) y += speed;
+                else y -= speed;
+
+                return x < rx || x > document.documentElement.clientWidth - rx || y < ry || y > document.documentElement.clientHeight - ry
+            }
+            setTimeout(move, 4)
+        }
+        move()
+    </script>
+
+    <style>
+        #myCanvas {
+            z-index: -1;
+        }
+        
+        body {
+            margin: 0;
+        }
+    </style>
+</body>
+
+</html>
