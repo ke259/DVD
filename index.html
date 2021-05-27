@@ -8,29 +8,30 @@
 </head>
 
 <body onload="setSize()" onresize="setSize()">
-    <canvas id="myCanvas" style="position: fixed;"></canvas>
-    <canvas id="shan" style="position: fixed;" onclick="full()"></canvas>
+    <canvas id="diceng" style="position: fixed;"></canvas>
+    <canvas id="_0ceng" style="position: fixed;"></canvas>
+    <canvas id="_1ceng" style="position: fixed;" onclick="full()"></canvas>
 
 
     <script>
-        var speed;
+        var speed = 2;
+        /*
+                function setSpeed() {
+                    var s = prompt("请输入速度(1~100)：", "").trim();
+                    console.log("s:", s)
+                    if (s == null || s == "" || isNaN(s)) {
+                        setSpeed()
+                    }
+                    if (1 <= s && s <= 100) {
+                        speed = s / 10
+                    } else {
+                        setSpeed()
+                    }
+                }
 
-        function setSpeed() {
-            var s = prompt("请输入速度(1~1000)：", "").trim();
-            console.log("s:", s)
-            if (s == null || s == "" || isNaN(s)) {
                 setSpeed()
-            }
-            if (1 <= s && s <= 1000) {
-                speed = s / 10
-            } else {
-                setSpeed()
-            }
-        }
-
-        setSpeed()
-        console.log(speed)
-
+                console.log(speed)
+        */
         function full() {
             var el = document.documentElement;
             var rfs = el.requestFullScreen || el.webkitRequestFullScreen || el.mozRequestFullScreen || el.msRequestFullScreen;
@@ -41,31 +42,70 @@
             }
         }
 
-        var myCanvas = document.getElementById("myCanvas");
-        var ctx1 = myCanvas.getContext("2d");
-        var shan = document.getElementById("shan");
-        var ctx2 = shan.getContext("2d")
+        var diceng = document.getElementById("diceng");
+        var ctx1 = diceng.getContext("2d");
+        var _0ceng = document.getElementById("_0ceng");
+        var ctx2 = _0ceng.getContext("2d")
 
         function setSize() {
             $("canvas").attr("width", document.documentElement.clientWidth)
             $("canvas").attr("height", document.documentElement.clientHeight);
+            noise.init();
         }
 
+        /*
+                var i = 0
+                var color = function() {
+                    i += 180
+                    ctx1.fillStyle = `hsl(${i},100%,50%)`
+                    ctx1.fillRect(0, 0, 2000, 3000);
+                    setTimeout(color, 1)
+                    i++
+                }
+                color()
+        */
 
-        var i = 0
-        var color = function() {
-            i += 180
-            ctx1.fillStyle = `hsl(${i},100%,50%)`
-            ctx1.fillRect(0, 0, 2000, 3000);
-            setTimeout(color, 1)
-            i++
-        }
-        color()
+        var noise = (function() {
+            var ب_ب;
+            var ಥ_ಥ;
+            var imgData;
+            var px;
+            var w;
+            var h;
+            var flickInt;
+
+            var flicker = function() {
+                ب_ب = document.getElementById('diceng');
+                ಥ_ಥ = ب_ب.getContext('2d');
+                ب_ب.width = w = document.documentElement.clientWidth;
+                ب_ب.height = h = document.documentElement.clientHeight;
+                ಥ_ಥ.fillStyle = 'white';
+                ಥ_ಥ.fillRect(0, 0, w, h);
+                ಥ_ಥ.fill();
+                imgData = ಥ_ಥ.getImageData(0, 0, w, h);
+                px = imgData.data;
+                flickInt = setInterval(flicks, 30);
+            };
+
+            var flicks = function() {
+                for (var i = 0; i < px.length; i += 4) {
+                    var col = Math.random() * 255 + 50;
+                    px[i] = col;
+                    px[i + 1] = col;
+                    px[i + 2] = col;
+                }
+                ಥ_ಥ.putImageData(imgData, 0, 0);
+            };
+
+            return {
+                init: flicker
+            };
+        }());
 
 
         var fx = fy = false;
-        var x = rx = 60,
-            y = ry = 30;
+        var x = rx = 80,
+            y = ry = 40;
         var colors = ["red", "blue", "green", "yellow", "pink"];
         var ci = 0;
 
@@ -81,11 +121,11 @@
             ctx2.fillStyle = colors[ci];
             ctx2.fill();
 
-            ctx2.font = "italic bold 30px arial";
+            ctx2.font = "bold 35px arial";
             ctx2.fillStyle = "white";
             ctx2.textAlign = "center";
             ctx2.textBaseline = "middle";
-            ctx2.fillText("DVD", x, y);
+            ctx2.fillText("无信号", x, y);
 
             function isBoom() {
                 return x < rx || x > document.documentElement.clientWidth - rx || y < ry || y > document.documentElement.clientHeight - ry
@@ -110,8 +150,12 @@
     </script>
 
     <style>
-        #myCanvas {
+        #diceng {
             z-index: -1;
+        }
+        
+        #_1ceng {
+            background-image: radial-gradient(white, rgba(0, 0, 0, 0), black);
         }
         
         body {
