@@ -138,10 +138,10 @@
                 if (y < ry) fy = false;
                 if (y > document.documentElement.clientHeight - ry) fy = true;
 
-                if (fx == false) x += speed * (rx/ry);
-                else x -= speed * (rx/ry);
-                if (fy == false) y += speed * (ry/rx);
-                else y -= speed * (ry/rx);
+                if (fx == false) x += speed * 5;
+                else x -= speed * 5;
+                if (fy == false) y += speed * 5;
+                else y -= speed * 5;
             }
             chxy()
             setTimeout(move, 10)
