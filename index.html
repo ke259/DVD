@@ -16,21 +16,21 @@
     <script>
         var speed = 8;
         
-                function setSpeed() {
-                    var s = prompt("请输入速度(1~100)：", "").trim();
-                    console.log("s:", s)
-                    if (s == null || s == "" || isNaN(s)) {
-                        setSpeed()
-                    }
-                    if (1 <= s && s <= 100) {
-                        speed = s / 10
-                    } else {
-                        setSpeed()
-                    }
-                }
+//                 function setSpeed() {
+//                     var s = prompt("请输入速度(1~100)：", "").trim();
+//                     console.log("s:", s)
+//                     if (s == null || s == "" || isNaN(s)) {
+//                         setSpeed()
+//                     }
+//                     if (1 <= s && s <= 100) {
+//                         speed = s / 10
+//                     } else {
+//                         setSpeed()
+//                     }
+//                 }
 
-                setSpeed()
-                console.log(speed)
+//                 setSpeed()
+//                 console.log(speed)
         
         function full() {
             var el = document.documentElement;
